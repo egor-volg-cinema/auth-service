@@ -6,6 +6,7 @@ import { RedisModule } from './infrastructure/redis/redis.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { OtpModule } from './modules/otp/otp.module'
 import { validateEnv } from './validators'
+import { AccountModule } from './modules/account/account.module';
 
 @Module({
 	imports: [
@@ -13,7 +14,8 @@ import { validateEnv } from './validators'
 		PrismaModule,
 		RedisModule,
 		AuthModule,
-		OtpModule
+		OtpModule,
+		AccountModule
 	]
 })
 export class AppModule {}

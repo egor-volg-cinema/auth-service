@@ -74,6 +74,7 @@ export const AccountScalarFieldEnum = {
   id: 'id',
   phone: 'phone',
   email: 'email',
+  role: 'role',
   isPhoneVerified: 'isPhoneVerified',
   isEmailVerified: 'isEmailVerified',
   createdAt: 'createdAt',

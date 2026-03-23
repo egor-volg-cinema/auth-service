@@ -14,6 +14,8 @@ model Account {
   phone String? @unique
   email String? @unique
 
+  role Role @default(USER)
+
   isPhoneVerified Boolean @default(false) @map("is_phone_verified")
   isEmailVerified Boolean @default(false) @map("is_email_verified")
 
@@ -21,4 +23,11 @@ model Account {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("accounts")
+}
+
+enum Role {
+  USER
+  ADMIN
+
+  @@map("roles")
 }
