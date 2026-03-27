@@ -3,6 +3,7 @@ import type {
 	GetAccountResponse
 } from '@egorcolgcinema/contracts/gen/account'
 import { Controller } from '@nestjs/common'
+import { GrpcMethod } from '@nestjs/microservices'
 
 import { AccountService } from './account.service'
 
@@ -10,6 +11,7 @@ import { AccountService } from './account.service'
 export class AccountController {
 	public constructor(private readonly accountService: AccountService) {}
 
+	@GrpcMethod('AccountService', 'GetAccount')
 	public async getAccount(
 		data: GetAccountRequest
 	): Promise<GetAccountResponse> {

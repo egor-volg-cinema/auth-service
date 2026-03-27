@@ -1,7 +1,9 @@
-import { GetAccountRequest } from '@egorcolgcinema/contracts/gen/account'
+import { GetAccountRequest, Role } from '@egorcolgcinema/contracts/gen/account'
 import { status } from '@grpc/grpc-js'
 import { Injectable } from '@nestjs/common'
 import { RpcException } from '@nestjs/microservices'
+
+import { convertEnum } from '@/enums'
 
 import { AccountRepository } from './account.repository'
 
@@ -20,11 +22,11 @@ export class AccountService {
 
 		return {
 			id: account.id,
-			phone: account.isEmailVerified,
+			phone: account.phone,
 			email: account.email,
 			isPhoneVerified: account.isPhoneVerified,
 			isEmailVerified: account.isEmailVerified,
-            role: account.role
+			role: convertEnum(Role, account.role)
 		}
 	}
 }
