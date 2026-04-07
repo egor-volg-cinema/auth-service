@@ -90,7 +90,7 @@ export class AuthService {
 		return this.generateToken(account.id)
 	}
 
-	public async refresh(data: RefreshRequest) {
+	public refresh(data: RefreshRequest) {
 		const { refreshToken } = data
 
 		const result = this.passportService.verify(refreshToken)

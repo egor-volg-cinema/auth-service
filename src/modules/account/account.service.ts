@@ -22,8 +22,8 @@ export class AccountService {
 
 		return {
 			id: account.id,
-			phone: account.phone ? account.phone : '',
-			email: account.email ? account.email : '',
+			phone: account.phone || '',
+			email: account.email || '',
 			isPhoneVerified: account.isPhoneVerified,
 			isEmailVerified: account.isEmailVerified,
 			role: convertEnum(Role, account.role)

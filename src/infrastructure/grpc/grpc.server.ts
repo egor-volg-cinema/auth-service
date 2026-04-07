@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 
-import { gRPCLoader, grpcProtoPaths } from './grpc.options'
+import { grpcLoader, grpcPackages, grpcProtoPaths } from './grpc.options'
 
 export function createGrpcServer(app: INestApplication, config: ConfigService) {
 	const host = config.get('GRPC_HOST')
@@ -13,10 +13,10 @@ export function createGrpcServer(app: INestApplication, config: ConfigService) {
 	app.connectMicroservice<MicroserviceOptions>({
 		transport: Transport.GRPC,
 		options: {
-			package: 'auth.v1',
+			package: grpcPackages,
 			protoPath: grpcProtoPaths,
 			url,
-			loader: gRPCLoader
+			loader: grpcLoader
 		}
 	})
 }
