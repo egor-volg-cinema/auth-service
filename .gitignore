@@ -5,7 +5,7 @@
 
 # Prisma generated files
 /prisma/generated
-
+/prisma/generated/*
 # Logs
 logs
 *.log
