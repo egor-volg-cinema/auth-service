@@ -1,4 +1,5 @@
 import {
+	ConfirmEmailChangeRequest,
 	GetAccountRequest,
 	InitEmailChangeRequest,
 	Role
@@ -52,6 +53,55 @@ export class AccountService {
 				details: 'Email is already in use.'
 			})
 
-		const code = await this.otpService.sendOtp(email, 'email')
+		const { code, hash } = await this.otpService.sendOtp(email, 'email')
+		console.log(code, ': code')
+
+		await this.accountRepository.upsertPendingChange({
+			accountId: userId,
+			type: 'email',
+			value: email,
+			codeHash: hash,
+			expiresAt: new Date(Date.now() + 5 * 60 * 1000)
+		})
+
+		return { ok: true, message: 'OTP sent to new email.' }
+	}
+
+	public async confirmEmailChange(data: ConfirmEmailChangeRequest) {
+		const { email, code, userId } = data
+
+		const pending = await this.accountRepository.findPendingChange(
+			userId,
+			'email'
+		)
+
+		if (!pending)
+			throw new RpcException({
+				code: status.NOT_FOUND,
+				details: 'No pending email change found for this email.'
+			})
+
+		if (pending.value !== email)
+			throw new RpcException({
+				code: status.INVALID_ARGUMENT,
+				details: 'Email missmatch'
+			})
+
+		if (pending.expiresAt < new Date())
+			throw new RpcException({
+				code: status.NOT_FOUND,
+				details: 'Code expired.'
+			})
+
+		await this.otpService.verifyOtp(pending.value, code, 'email')
+
+		await this.userRepository.update(userId, {
+			email,
+			isEmailVerified: true
+		})
+
+		await this.accountRepository.deletePendingChange(userId, 'email')
+
+		return { ok: true, message: 'Email updated successfully.' }
 	}
 }

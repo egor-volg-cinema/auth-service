@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Account } from '@prisma/generated/client'
+import { AccountCreateInput } from '@prisma/generated/internal/prismaNamespaceBrowser'
 
 import { PrismaService } from '@/infrastructure/prisma/prisma.service'
 
@@ -20,6 +21,18 @@ export class UserRepository {
 			where: {
 				email
 			}
+		})
+	}
+
+	public async update(
+		id: string,
+		data: AccountCreateInput
+	): Promise<Account> {
+		return await this.prismaService.account.update({
+			where: {
+				id
+			},
+			data
 		})
 	}
 }

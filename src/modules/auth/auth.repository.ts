@@ -13,16 +13,4 @@ export class AuthRepository {
 			data
 		})
 	}
-
-	public async update(
-		id: string,
-		data: AccountCreateInput
-	): Promise<Account> {
-		return await this.prismaService.account.update({
-			where: {
-				id
-			},
-			data
-		})
-	}
 }
