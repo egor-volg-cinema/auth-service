@@ -1,7 +1,10 @@
 import {
 	ConfirmEmailChangeRequest,
+	ConfirmPhoneChangeRequest,
 	GetAccountRequest,
 	InitEmailChangeRequest,
+	InitPhoneChangeRequest,
+	InitPhoneChangeRequest,
 	Role
 } from '@egorcolgcinema/contracts/gen/account'
 import { status } from '@grpc/grpc-js'
@@ -13,6 +16,8 @@ import { convertEnum } from '@/enums'
 import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
 
+import { email } from 'node_modules/zod/v4/core/regexes'
+import { email } from 'node_modules/zod/v4/core/regexes'
 import { AccountRepository } from './account.repository'
 
 @Injectable()
@@ -103,5 +108,68 @@ export class AccountService {
 		await this.accountRepository.deletePendingChange(userId, 'email')
 
 		return { ok: true, message: 'Email updated successfully.' }
+	}
+
+	public async initPhoneChange(data: InitPhoneChangeRequest) {
+		const { userId, phone } = data
+
+		const existingAccount = await this.userRepository.findByPhone(phone)
+
+		if (existingAccount)
+			throw new RpcException({
+				code: status.ALREADY_EXISTS,
+				details: 'Phone is already in use.'
+			})
+
+		const { code, hash } = await this.otpService.sendOtp(phone, 'phone')
+		console.log(code, ': code')
+
+		await this.accountRepository.upsertPendingChange({
+			accountId: userId,
+			type: 'phone',
+			value: phone,
+			codeHash: hash,
+			expiresAt: new Date(Date.now() + 5 * 60 * 1000)
+		})
+
+		return { ok: true, message: 'OTP sent to new phone.' }
+	}
+
+	public async confirmPhoneChange(data: ConfirmPhoneChangeRequest) {
+		const { phone, code, userId } = data
+
+		const pending = await this.accountRepository.findPendingChange(
+			userId,
+			'phone'
+		)
+
+		if (!pending)
+			throw new RpcException({
+				code: status.NOT_FOUND,
+				details: 'No pending phone change found for this phone.'
+			})
+
+		if (pending.value !== phone)
+			throw new RpcException({
+				code: status.INVALID_ARGUMENT,
+				details: 'Phone missmatch'
+			})
+
+		if (pending.expiresAt < new Date())
+			throw new RpcException({
+				code: status.NOT_FOUND,
+				details: 'Code expired.'
+			})
+
+		await this.otpService.verifyOtp(pending.value, code, 'phone')
+
+		await this.userRepository.update(userId, {
+			phone,
+			isPhoneVerified: true
+		})
+
+		await this.accountRepository.deletePendingChange(userId, 'phone')
+
+		return { ok: true, message: 'Phone updated successfully.' }
 	}
 }
