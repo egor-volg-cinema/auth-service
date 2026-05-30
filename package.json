@@ -19,7 +19,7 @@
     "prisma:push": "prisma db push"
   },
   "dependencies": {
-    "@egorcolgcinema/contracts": "^1.0.7",
+    "@egorcolgcinema/contracts": "^1.0.10",
     "@egorcolgcinema/core": "^1.0.5",
     "@egorcolgcinema/passport": "^1.0.4",
     "@grpc/grpc-js": "^1.14.3",
