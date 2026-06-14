@@ -22,6 +22,11 @@ export const envSchema = z.object({
 	PASSPORT_ACCESS_TTL: z.string().min(1),
 	PASSPORT_REFRESH_TTL: z.string().min(1),
 
+	TELEGRAM_BOT_ID: z.string().min(1),
+	TELEGRAM_BOT_TOKEN: z.string().min(1),
+	TELEGRAM_BOT_USERNAME: z.string().min(1),
+	TELEGRAM_REDIRECT_ORIGIN: z.string().min(1),
+
 	NODE_ENV: z
 		.enum(['development', 'production', 'test'])
 		.default('development')
