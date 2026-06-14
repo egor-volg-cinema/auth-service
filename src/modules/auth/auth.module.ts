@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config'
 import { getPassportLoader } from '@/loaders'
 
 import { OtpService } from '../otp/otp.service'
+import { UserRepository } from '../shared'
 
 import { AuthController } from './auth.controller'
 import { AuthRepository } from './auth.repository'
@@ -18,6 +19,6 @@ import { AuthService } from './auth.service'
 		})
 	],
 	controllers: [AuthController],
-	providers: [AuthService, AuthRepository, OtpService]
+	providers: [AuthService, AuthRepository, OtpService, UserRepository]
 })
 export class AuthModule {}

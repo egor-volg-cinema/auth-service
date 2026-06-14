@@ -1,7 +1,6 @@
+import { PrismaService } from '@infrastructure/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
 import type { Account, PendingContactChange } from '@prisma/generated/client'
-
-import { PrismaService } from '@/infrastructure/prisma/prisma.service'
 
 @Injectable()
 export class AccountRepository {

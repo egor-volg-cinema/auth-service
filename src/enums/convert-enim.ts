@@ -1,6 +1,6 @@
-export function convertEnum<T extends object>(
+export function convertEnum<T extends Record<string, string | number>>(
 	target: T,
-	value: string
+	value: keyof T
 ): T[keyof T] {
-	return (target as any)[value]
+	return target[value]
 }

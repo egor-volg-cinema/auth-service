@@ -4,20 +4,16 @@ import {
 	GetAccountRequest,
 	InitEmailChangeRequest,
 	InitPhoneChangeRequest,
-	InitPhoneChangeRequest,
 	Role
 } from '@egorcolgcinema/contracts/gen/account'
+import { convertEnum } from '@enums'
 import { status } from '@grpc/grpc-js'
 import { Injectable } from '@nestjs/common'
 import { RpcException } from '@nestjs/microservices'
 
-import { convertEnum } from '@/enums'
-
 import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
 
-import { email } from 'node_modules/zod/v4/core/regexes'
-import { email } from 'node_modules/zod/v4/core/regexes'
 import { AccountRepository } from './account.repository'
 
 @Injectable()
