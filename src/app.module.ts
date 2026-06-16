@@ -1,12 +1,14 @@
+import { TelegramModule } from '@modules/telegram/telegram.module'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { validateEnv } from '@validators'
 
 import { PrismaModule } from './infrastructure/prisma/prisma.module'
 import { RedisModule } from './infrastructure/redis/redis.module'
 import { AccountModule } from './modules/account/account.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { OtpModule } from './modules/otp/otp.module'
-import { validateEnv } from './validators'
+import { TokenModule } from './modules/token/token.module';
 
 @Module({
 	imports: [
@@ -15,7 +17,9 @@ import { validateEnv } from './validators'
 		RedisModule,
 		AuthModule,
 		OtpModule,
-		AccountModule
+		AccountModule,
+		TelegramModule,
+		TokenModule
 	]
 })
 export class AppModule {}
