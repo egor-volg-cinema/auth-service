@@ -3,10 +3,9 @@ import type {
 	SendOtpRequest,
 	VerifyOtpRequest
 } from '@egorcolgcinema/contracts/gen/auth'
-import { PassportService, TokenPayload } from '@egorcolgcinema/passport'
 import { status } from '@grpc/grpc-js'
+import { TokenService } from '@modules/token/token.service'
 import { Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { RpcException } from '@nestjs/microservices'
 import { Account } from '@prisma/generated/client'
 
@@ -17,21 +16,12 @@ import { AuthRepository } from './auth.repository'
 
 @Injectable()
 export class AuthService {
-	private readonly ACCESS_TOKEN_TTL: number
-	private readonly REFRESH_TOKEN_TTL: number
-
 	public constructor(
-		private readonly configService: ConfigService,
+		private readonly tokenService: TokenService,
 		private readonly authRepository: AuthRepository,
 		private readonly userRepository: UserRepository,
-		private readonly otpService: OtpService,
-		private readonly passportService: PassportService
-	) {
-		this.ACCESS_TOKEN_TTL =
-			this.configService.get('ACCESS_TOKEN_TTL') || 900
-		this.REFRESH_TOKEN_TTL =
-			this.configService.get('REFRESH_TOKEN_TTL') || 2592000
-	}
+		private readonly otpService: OtpService
+	) {}
 
 	public async sendOtp(data: SendOtpRequest) {
 		const { identifier, type } = data
@@ -89,39 +79,19 @@ export class AuthService {
 				isEmailVerified: true
 			})
 
-		return this.generateToken(account.id)
+		return this.tokenService.generateToken(account.id)
 	}
 
 	public refresh(data: RefreshRequest) {
 		const { refreshToken } = data
 
-		const result = this.passportService.verify(refreshToken)
+		const result = this.tokenService.verifyToken(refreshToken)
 		if (!result.valid)
 			throw new RpcException({
 				code: status.UNAUTHENTICATED,
 				details: result.reason
 			})
 
-		return this.generateToken(result.userId!)
-	}
-
-	private generateToken(userId: string) {
-		const payload: TokenPayload = {
-			sub: userId
-		}
-
-		const accessToken = this.passportService.generate(
-			String(payload.sub),
-			this.ACCESS_TOKEN_TTL
-		)
-		const refreshToken = this.passportService.generate(
-			String(payload.sub),
-			this.REFRESH_TOKEN_TTL
-		)
-
-		return {
-			accessToken,
-			refreshToken
-		}
+		return this.tokenService.generateToken(result.userId!)
 	}
 }
