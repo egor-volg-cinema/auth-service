@@ -47,7 +47,7 @@ export class TelegramService {
 	}
 
 	public async getTelegramBotVerify(query: TelegramVerifyRequest) {
-		const isValid = this.checkTelegramAuth(query.query)
+		const isValid = await this.checkTelegramAuth(query.query)
 		if (!isValid)
 			throw new RpcException({
 				code: status.UNAUTHENTICATED,
