@@ -1,4 +1,6 @@
 import type {
+	TelegramCompleteRequest,
+	TelegramCompleteResponse,
 	TelegramInitResponse,
 	TelegramVerifyRequest,
 	TelegramVerifyResponse
@@ -22,5 +24,14 @@ export class TelegramController {
 		query: TelegramVerifyRequest
 	): Promise<TelegramVerifyResponse> {
 		return this.telegramService.getTelegramBotVerify(query)
+	}
+
+	@GrpcMethod('AuthService', 'TelegramComplete')
+	public async telegramBotComplete(
+		data: TelegramCompleteRequest
+	): Promise<TelegramCompleteResponse> {
+		console.log('DATA:', data)
+
+		return { sessionId: data.sessionId }
 	}
 }
