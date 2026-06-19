@@ -88,7 +88,7 @@ export class TelegramService {
 		const dataCheckString = dataCheckArray.join('\n')
 		const secretKey = createHash('sha256')
 			.update(`${this.TELEGRAM_BOT_ID}:${this.TELEGRAM_BOT_TOKEN}`)
-			.digest('hex')
+			.digest()
 		const hmac = createHmac('sha256', secretKey)
 			.update(dataCheckString)
 			.digest('hex')
