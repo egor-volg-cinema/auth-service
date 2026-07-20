@@ -1,6 +1,11 @@
-import type { TelegramVerifyRequest } from '@egorcolgcinema/contracts/gen/auth'
+import type {
+	TelegramCompleteRequest,
+	TelegramConsumeRequest,
+	TelegramVerifyRequest
+} from '@egorcolgcinema/contracts/gen/auth'
 import { status } from '@grpc/grpc-js'
 import { RedisService } from '@infrastructure/redis/redis.service'
+import { UserRepository } from '@modules/shared/repositories/user.repository'
 import { TokenService } from '@modules/token/token.service'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config/dist/config.service'
@@ -19,6 +24,7 @@ export class TelegramService {
 	public constructor(
 		private readonly redisService: RedisService,
 		private readonly telegramRepository: TelegramRepository,
+		private readonly userRepository: UserRepository,
 		private readonly tokenService: TokenService,
 		private readonly configService: ConfigService
 	) {
@@ -74,6 +80,72 @@ export class TelegramService {
 		return {
 			url: `https://t.me/${this.TELEGRAM_BOT_USERNAME}?start=${sessionId}`
 		}
+	}
+
+	public async telegramBotComplete(data: TelegramCompleteRequest) {
+		const { sessionId, phone } = data
+
+		const raw = await this.redisService.get(`telegram_session:${sessionId}`)
+
+		if (!raw)
+			throw new RpcException({
+				code: status.NOT_FOUND,
+				details: 'Session not found or expired'
+			})
+
+		const { telegramId } = JSON.parse(raw) as { telegramId: string }
+
+		let user = await this.userRepository.findByPhone(phone)
+
+		if (!user) user = await this.userRepository.create({ phone })
+
+		const existingTelegramUser =
+			await this.telegramRepository.findByTelegramId(telegramId)
+		if (existingTelegramUser && existingTelegramUser.id !== user.id) {
+			throw new RpcException({
+				code: status.ALREADY_EXISTS,
+				details:
+					'Этот Telegram аккаунт уже привязан к другому пользователю'
+			})
+		}
+
+		await this.userRepository.update(user.id, {
+			telegramId,
+			isPhoneVerified: true
+		})
+
+		const tokens = this.tokenService.generateToken(user.id)
+		await this.redisService.set(
+			`telegram_tokens:${sessionId}`,
+			JSON.stringify(tokens),
+			'EX',
+			120
+		)
+
+		await this.redisService.del(`telegram_session:${sessionId}`)
+
+		return { sessionId }
+	}
+
+	public async telegramConsumeSession(data: TelegramConsumeRequest) {
+		const { sessionId } = data
+
+		const raw = await this.redisService.get(`telegram_tokens:${sessionId}`)
+
+		if (!raw)
+			throw new RpcException({
+				code: status.NOT_FOUND,
+				details: 'Session not found or expired'
+			})
+
+		const tokens = JSON.parse(raw) as {
+			accessToken: string
+			refreshToken: string
+		}
+
+		await this.redisService.del(`telegram_tokens:${sessionId}`)
+
+		return tokens
 	}
 
 	private async checkTelegramAuth(query: Record<string, string>) {

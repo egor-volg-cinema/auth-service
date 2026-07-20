@@ -24,6 +24,12 @@ export class UserRepository {
 		})
 	}
 
+	public async create(data: AccountCreateInput): Promise<Account> {
+		return await this.prismaService.account.create({
+			data
+		})
+	}
+
 	public async update(
 		id: string,
 		data: AccountCreateInput

@@ -12,13 +12,10 @@ import { Account } from '@prisma/generated/client'
 import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
 
-import { AuthRepository } from './auth.repository'
-
 @Injectable()
 export class AuthService {
 	public constructor(
-		private readonly tokenService: TokenService,
-		private readonly authRepository: AuthRepository,
+		private readonly tokenService: TokenService, 
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
 	) {}
@@ -32,7 +29,7 @@ export class AuthService {
 		else account = await this.userRepository.findByEmail(identifier)
 
 		if (!account) {
-			account = await this.authRepository.create({
+			account = await this.userRepository.create({
 				email: type === 'email' ? identifier : null,
 				phone: type === 'phone' ? identifier : null
 			})
