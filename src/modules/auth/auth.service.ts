@@ -4,6 +4,7 @@ import type {
 	VerifyOtpRequest
 } from '@egorcolgcinema/contracts/gen/auth'
 import { status } from '@grpc/grpc-js'
+import { MessagingService } from '@infrastructure/messaging/messaging.service'
 import { TokenService } from '@modules/token/token.service'
 import { Injectable } from '@nestjs/common'
 import { RpcException } from '@nestjs/microservices'
@@ -15,7 +16,8 @@ import { UserRepository } from '../shared'
 @Injectable()
 export class AuthService {
 	public constructor(
-		private readonly tokenService: TokenService, 
+		private readonly tokenService: TokenService,
+		private readonly messagingService: MessagingService,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
 	) {}
@@ -40,7 +42,11 @@ export class AuthService {
 			type as 'phone' | 'email'
 		)
 
-		console.debug('CODE', code)
+		await this.messagingService.otpRequested({
+			identifier,
+			type,
+			code
+		})
 
 		return { ok: true }
 	}
