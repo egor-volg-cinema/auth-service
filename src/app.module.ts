@@ -24,4 +24,4 @@ import { TokenModule } from './modules/token/token.module'
 		MessagingModule
 	]
 })
-export class AppModule {}
+export class AppModule { }

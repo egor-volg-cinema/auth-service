@@ -1,5 +1,5 @@
-import { TokenPayload } from '@egorcolgcinema/passport/dist/interfaces/token.interface'
-import { PassportService } from '@egorcolgcinema/passport/dist/passport.service'
+import { TokenPayload } from '@egorcolgcinema/passport'
+import { PassportService } from '@egorcolgcinema/passport'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config/dist/config.service'
 

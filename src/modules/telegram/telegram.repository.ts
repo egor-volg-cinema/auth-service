@@ -1,6 +1,6 @@
 import { PrismaService } from '@infrastructure/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
-import { Account } from '@prisma/client/edge'
+import { Account } from '@prisma/generated/client'
 
 @Injectable()
 export class TelegramRepository {
