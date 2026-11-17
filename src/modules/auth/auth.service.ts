@@ -2,7 +2,7 @@ import type {
 	RefreshRequest,
 	SendOtpRequest,
 	VerifyOtpRequest
-} from '@egorcolgcinema/contracts/gen/auth'
+} from '@teacinema/contracts/gen/ts/auth'
 import { status } from '@grpc/grpc-js'
 import { MessagingService } from '@infrastructure/messaging/messaging.service'
 import { TokenService } from '@modules/token/token.service'
@@ -20,7 +20,7 @@ export class AuthService {
 		private readonly messagingService: MessagingService,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
-	) {}
+	) { }
 
 	public async sendOtp(data: SendOtpRequest) {
 		const { identifier, type } = data
@@ -37,7 +37,7 @@ export class AuthService {
 			})
 		}
 
-		const code = await this.otpService.sendOtp(
+		const { code } = await this.otpService.sendOtp(
 			identifier,
 			type as 'phone' | 'email'
 		)

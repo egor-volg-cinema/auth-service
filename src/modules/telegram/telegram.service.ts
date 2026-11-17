@@ -2,7 +2,7 @@ import type {
 	TelegramCompleteRequest,
 	TelegramConsumeRequest,
 	TelegramVerifyRequest
-} from '@egorcolgcinema/contracts/gen/auth'
+} from '@teacinema/contracts/gen/ts/auth'
 import { status } from '@grpc/grpc-js'
 import { RedisService } from '@infrastructure/redis/redis.service'
 import { UserRepository } from '@modules/shared/repositories/user.repository'

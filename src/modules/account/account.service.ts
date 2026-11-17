@@ -1,11 +1,10 @@
-import {
+import type {
 	ConfirmEmailChangeRequest,
 	ConfirmPhoneChangeRequest,
 	GetAccountRequest,
 	InitEmailChangeRequest,
-	InitPhoneChangeRequest,
-	Role
-} from '@egorcolgcinema/contracts/gen/account'
+	InitPhoneChangeRequest
+} from '@teacinema/contracts/gen/ts/account'
 import { convertEnum } from '@enums'
 import { status } from '@grpc/grpc-js'
 import { Injectable } from '@nestjs/common'
@@ -15,6 +14,8 @@ import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
 
 import { AccountRepository } from './account.repository'
+
+const Role = { USER: 0, ADMIN: 1, UNRECOGNIZED: -1 } as const
 
 @Injectable()
 export class AccountService {

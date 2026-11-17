@@ -1,4 +1,4 @@
-import type { OtpRequestedEvent } from '@egorcolgcinema/contracts'
+import type { OtpRequestedEvent } from '@teacinema/contracts'
 import { Inject, Injectable } from '@nestjs/common'
 import { ClientProxy } from '@nestjs/microservices'
 

@@ -1,4 +1,4 @@
-import { PassportOptions } from '@egorcolgcinema/passport'
+import { PassportOptions } from '@teacinema/passport'
 import { ConfigService } from '@nestjs/config'
 
 export function getPassportLoader(

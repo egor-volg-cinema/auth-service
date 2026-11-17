@@ -9,7 +9,7 @@ import type {
 	InitEmailChangeResponse,
 	InitPhoneChangeRequest,
 	InitPhoneChangeResponse
-} from '@egorcolgcinema/contracts/gen/account'
+} from '@teacinema/contracts/gen/ts/account'
 import { Controller } from '@nestjs/common'
 import { GrpcMethod } from '@nestjs/microservices'
 

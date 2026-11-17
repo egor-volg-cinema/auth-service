@@ -1,4 +1,4 @@
-import { PassportModule } from '@egorcolgcinema/passport'
+import { PassportModule } from '@teacinema/passport'
 import { getPassportLoader } from '@loaders/passport.loader'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config/dist/config.service'

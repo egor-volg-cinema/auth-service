@@ -19,9 +19,6 @@
     "prisma:push": "prisma db push"
   },
   "dependencies": {
-    "@egorcolgcinema/contracts": "^1.0.10",
-    "@egorcolgcinema/core": "^1.0.5",
-    "@egorcolgcinema/passport": "^1.0.4",
     "@grpc/grpc-js": "^1.14.3",
     "@grpc/proto-loader": "^0.8.0",
     "@nestjs/common": "^11.0.1",
@@ -32,6 +29,10 @@
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.8.0",
+    "@teacinema/common": "^1.2.0",
+    "@teacinema/contracts": "^1.5.1",
+    "@teacinema/core": "^1.0.3",
+    "@teacinema/passport": "^1.0.0",
     "amqp-connection-manager": "^5.0.0",
     "amqplib": "^2.0.1",
     "ioredis": "^5.10.0",
