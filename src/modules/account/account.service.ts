@@ -23,7 +23,7 @@ export class AccountService {
 		private readonly accountRepository: AccountRepository,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
-	) {}
+	) { }
 	public async getAccount(data: GetAccountRequest) {
 		const { id } = data
 
