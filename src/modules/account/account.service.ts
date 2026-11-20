@@ -14,12 +14,14 @@ import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
 
 import { AccountRepository } from './account.repository'
+import { MessagingService } from '@infrastructure/messaging/messaging.service'
 
 const Role = { USER: 0, ADMIN: 1, UNRECOGNIZED: -1 } as const
 
 @Injectable()
 export class AccountService {
 	public constructor(
+		private readonly messagingService: MessagingService,
 		private readonly accountRepository: AccountRepository,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
@@ -56,7 +58,12 @@ export class AccountService {
 			})
 
 		const { code, hash } = await this.otpService.sendOtp(email, 'email')
-		console.log(code, ': code')
+
+
+		await this.messagingService.emailChanged({
+			email,
+			code
+		})
 
 		await this.accountRepository.upsertPendingChange({
 			accountId: userId,
