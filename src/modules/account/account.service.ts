@@ -1,3 +1,8 @@
+import { convertEnum } from '@enums'
+import { status } from '@grpc/grpc-js'
+import { MessagingService } from '@infrastructure/messaging/messaging.service'
+import { Injectable } from '@nestjs/common'
+import { RpcException } from '@nestjs/microservices'
 import type {
 	ConfirmEmailChangeRequest,
 	ConfirmPhoneChangeRequest,
@@ -5,16 +10,11 @@ import type {
 	InitEmailChangeRequest,
 	InitPhoneChangeRequest
 } from '@teacinema/contracts/gen/ts/account'
-import { convertEnum } from '@enums'
-import { status } from '@grpc/grpc-js'
-import { Injectable } from '@nestjs/common'
-import { RpcException } from '@nestjs/microservices'
 
 import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
 
 import { AccountRepository } from './account.repository'
-import { MessagingService } from '@infrastructure/messaging/messaging.service'
 
 const Role = { USER: 0, ADMIN: 1, UNRECOGNIZED: -1 } as const
 
@@ -25,7 +25,7 @@ export class AccountService {
 		private readonly accountRepository: AccountRepository,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
-	) { }
+	) {}
 	public async getAccount(data: GetAccountRequest) {
 		const { id } = data
 
@@ -58,7 +58,6 @@ export class AccountService {
 			})
 
 		const { code, hash } = await this.otpService.sendOtp(email, 'email')
-
 
 		await this.messagingService.emailChanged({
 			email,

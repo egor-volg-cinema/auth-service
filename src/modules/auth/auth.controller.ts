@@ -1,3 +1,5 @@
+import { Controller } from '@nestjs/common'
+import { GrpcMethod } from '@nestjs/microservices'
 import type {
 	RefreshRequest,
 	RefreshResponse,
@@ -6,8 +8,6 @@ import type {
 	VerifyOtpRequest,
 	VerifyOtpResponse
 } from '@teacinema/contracts/gen/ts/auth'
-import { Controller } from '@nestjs/common'
-import { GrpcMethod } from '@nestjs/microservices'
 
 import { AuthService } from './auth.service'
 

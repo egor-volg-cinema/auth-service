@@ -1,12 +1,23 @@
-
 import { Controller } from '@nestjs/common'
 import { GrpcMethod } from '@nestjs/microservices'
-import type { GetAccountResponse, InitEmailChangeRequest, InitEmailChangeResponse, ConfirmEmailChangeRequest, ConfirmEmailChangeResponse, InitPhoneChangeRequest, InitPhoneChangeResponse, ConfirmPhoneChangeRequest, ConfirmPhoneChangeResponse, GetAccountRequest } from '@teacinema/contracts/gen/ts/account'
+import type {
+	ConfirmEmailChangeRequest,
+	ConfirmEmailChangeResponse,
+	ConfirmPhoneChangeRequest,
+	ConfirmPhoneChangeResponse,
+	GetAccountRequest,
+	GetAccountResponse,
+	InitEmailChangeRequest,
+	InitEmailChangeResponse,
+	InitPhoneChangeRequest,
+	InitPhoneChangeResponse
+} from '@teacinema/contracts/gen/ts/account'
+
 import { AccountService } from './account.service'
-	
+
 @Controller()
 export class AccountController {
-	public constructor(private readonly accountService: AccountService) { }
+	public constructor(private readonly accountService: AccountService) {}
 
 	@GrpcMethod('AccountService', 'GetAccount')
 	public async getAccount(

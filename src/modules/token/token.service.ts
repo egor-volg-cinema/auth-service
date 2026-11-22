@@ -1,7 +1,7 @@
-import { TokenPayload } from '@teacinema/passport'
-import { PassportService } from '@teacinema/passport'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config/dist/config.service'
+import { TokenPayload } from '@teacinema/passport'
+import { PassportService } from '@teacinema/passport'
 
 @Injectable()
 export class TokenService {

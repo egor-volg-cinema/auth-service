@@ -15,8 +15,7 @@ export const envSchema = z.object({
 	REDIS_HOST: z.string().min(1),
 	REDIS_PORT: z.coerce.number().min(1).max(65535),
 
-	RMQ_URL: z.string()
-		.startsWith('amqp://', 'Must be a valid RMQ URL'),
+	RMQ_URL: z.string().startsWith('amqp://', 'Must be a valid RMQ URL'),
 
 	GRPC_HOST: z.string().min(1),
 	GRPC_PORT: z.coerce.number().min(1).max(65535),

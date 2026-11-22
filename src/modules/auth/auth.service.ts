@@ -1,14 +1,14 @@
-import type {
-	RefreshRequest,
-	SendOtpRequest,
-	VerifyOtpRequest
-} from '@teacinema/contracts/gen/ts/auth'
 import { status } from '@grpc/grpc-js'
 import { MessagingService } from '@infrastructure/messaging/messaging.service'
 import { TokenService } from '@modules/token/token.service'
 import { Injectable } from '@nestjs/common'
 import { RpcException } from '@nestjs/microservices'
 import { Account } from '@prisma/generated/client'
+import type {
+	RefreshRequest,
+	SendOtpRequest,
+	VerifyOtpRequest
+} from '@teacinema/contracts/gen/ts/auth'
 
 import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
@@ -20,7 +20,7 @@ export class AuthService {
 		private readonly messagingService: MessagingService,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
-	) { }
+	) {}
 
 	public async sendOtp(data: SendOtpRequest) {
 		const { identifier, type } = data

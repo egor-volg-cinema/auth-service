@@ -1,8 +1,3 @@
-import type {
-	TelegramCompleteRequest,
-	TelegramConsumeRequest,
-	TelegramVerifyRequest
-} from '@teacinema/contracts/gen/ts/auth'
 import { status } from '@grpc/grpc-js'
 import { RedisService } from '@infrastructure/redis/redis.service'
 import { UserRepository } from '@modules/shared/repositories/user.repository'
@@ -10,6 +5,11 @@ import { TokenService } from '@modules/token/token.service'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config/dist/config.service'
 import { RpcException } from '@nestjs/microservices'
+import type {
+	TelegramCompleteRequest,
+	TelegramConsumeRequest,
+	TelegramVerifyRequest
+} from '@teacinema/contracts/gen/ts/auth'
 import { createHash, createHmac, randomBytes } from 'crypto'
 
 import { TelegramRepository } from './telegram.repository'

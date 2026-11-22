@@ -1,8 +1,8 @@
 import { Global, Module } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { ClientsModule, Transport } from '@nestjs/microservices'
 
 import { MessagingService } from './messaging.service'
-import { ConfigService } from '@nestjs/config'
 
 @Global()
 @Module({
@@ -28,4 +28,4 @@ import { ConfigService } from '@nestjs/config'
 	providers: [MessagingService],
 	exports: [MessagingService]
 })
-export class MessagingModule { }
+export class MessagingModule {}

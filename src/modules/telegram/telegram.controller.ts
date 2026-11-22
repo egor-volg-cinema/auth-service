@@ -1,3 +1,5 @@
+import { Controller } from '@nestjs/common'
+import { GrpcMethod } from '@nestjs/microservices'
 import type {
 	TelegramCompleteRequest,
 	TelegramCompleteResponse,
@@ -7,8 +9,6 @@ import type {
 	TelegramVerifyRequest,
 	TelegramVerifyResponse
 } from '@teacinema/contracts/gen/ts/auth'
-import { Controller } from '@nestjs/common'
-import { GrpcMethod } from '@nestjs/microservices'
 
 import { TelegramService } from './telegram.service'
 
