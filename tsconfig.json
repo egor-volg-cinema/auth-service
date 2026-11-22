@@ -26,6 +26,7 @@
 		},
 		"incremental": true,
 		"skipLibCheck": true,
+		"strict": false,
 		"strictNullChecks": true,
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitAny": false,
