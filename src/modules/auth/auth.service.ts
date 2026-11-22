@@ -1,4 +1,5 @@
 import { status } from '@grpc/grpc-js'
+import { UserClientGrpc } from '@infrastructure/clients/users.grpc'
 import { MessagingService } from '@infrastructure/messaging/messaging.service'
 import { TokenService } from '@modules/token/token.service'
 import { Injectable } from '@nestjs/common'
@@ -9,6 +10,7 @@ import type {
 	SendOtpRequest,
 	VerifyOtpRequest
 } from '@teacinema/contracts/gen/ts/auth'
+import { firstValueFrom } from 'rxjs'
 
 import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
@@ -18,6 +20,7 @@ export class AuthService {
 	public constructor(
 		private readonly tokenService: TokenService,
 		private readonly messagingService: MessagingService,
+		private readonly userClient: UserClientGrpc,
 		private readonly userRepository: UserRepository,
 		private readonly otpService: OtpService
 	) {}
@@ -81,6 +84,8 @@ export class AuthService {
 			await this.userRepository.update(account.id, {
 				isEmailVerified: true
 			})
+
+		await firstValueFrom(this.userClient.create({ id: account.id }))
 
 		return this.tokenService.generateToken(account.id)
 	}

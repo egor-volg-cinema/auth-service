@@ -14,10 +14,10 @@ export class UserClientGrpc implements OnModuleInit {
 
 	public onModuleInit(): void {
 		this.userService =
-			this.client.getService<UsersServiceClient>('UserService')
+			this.client.getService<UsersServiceClient>('UsersService')
 	}
 
 	public create(request: CreateUserRequest) {
-		return this.userService.sendOtp(request)
+		return this.userService.createUser(request)
 	}
 }

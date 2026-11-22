@@ -1,3 +1,4 @@
+import { UserModule } from '@infrastructure/clients/users.module'
 import { TelegramModule } from '@modules/telegram/telegram.module'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
@@ -21,7 +22,8 @@ import { TokenModule } from './modules/token/token.module'
 		AccountModule,
 		TelegramModule,
 		TokenModule,
-		MessagingModule
+		MessagingModule,
+		UserModule
 	]
 })
 export class AppModule {}

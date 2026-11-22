@@ -1,4 +1,5 @@
 import { status } from '@grpc/grpc-js'
+import { UserClientGrpc } from '@infrastructure/clients/users.grpc'
 import { RedisService } from '@infrastructure/redis/redis.service'
 import { UserRepository } from '@modules/shared/repositories/user.repository'
 import { TokenService } from '@modules/token/token.service'
@@ -11,6 +12,7 @@ import type {
 	TelegramVerifyRequest
 } from '@teacinema/contracts/gen/ts/auth'
 import { createHash, createHmac, randomBytes } from 'crypto'
+import { firstValueFrom } from 'rxjs'
 
 import { TelegramRepository } from './telegram.repository'
 
@@ -26,7 +28,8 @@ export class TelegramService {
 		private readonly telegramRepository: TelegramRepository,
 		private readonly userRepository: UserRepository,
 		private readonly tokenService: TokenService,
-		private readonly configService: ConfigService
+		private readonly configService: ConfigService,
+		private readonly userClient: UserClientGrpc
 	) {
 		this.TELEGRAM_BOT_ID =
 			this.configService.getOrThrow<string>('TELEGRAM_BOT_ID')
@@ -68,8 +71,10 @@ export class TelegramService {
 		if (exists && exists.phone)
 			return this.tokenService.generateToken(exists.id)
 
-		const sessionId = randomBytes(16).toString('hex')
+		if (exists)
+			await firstValueFrom(this.userClient.create({ id: exists.id }))
 
+		const sessionId = randomBytes(16).toString('hex')
 		await this.redisService.set(
 			`telegram_session:${sessionId}`,
 			JSON.stringify({ telegramId, username: query.query.username }),

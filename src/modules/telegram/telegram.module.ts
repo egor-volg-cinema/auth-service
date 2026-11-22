@@ -1,3 +1,4 @@
+import { UserModule } from '@infrastructure/clients/users.module'
 import { UserRepository } from '@modules/shared'
 import { TokenModule } from '@modules/token/token.module'
 import { TokenService } from '@modules/token/token.service'
@@ -8,7 +9,7 @@ import { TelegramRepository } from './telegram.repository'
 import { TelegramService } from './telegram.service'
 
 @Module({
-	imports: [TokenModule],
+	imports: [TokenModule, UserModule],
 	controllers: [TelegramController],
 	providers: [
 		TelegramService,

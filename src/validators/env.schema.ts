@@ -20,6 +20,8 @@ export const envSchema = z.object({
 	GRPC_HOST: z.string().min(1),
 	GRPC_PORT: z.coerce.number().min(1).max(65535),
 
+	USERS_GRPC_URL: z.string().min(1),
+
 	PASSPORT_SECRET_KEY: z.string().min(1),
 	PASSPORT_ACCESS_TTL: z.string().min(1),
 	PASSPORT_REFRESH_TTL: z.string().min(1),
