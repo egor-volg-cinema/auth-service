@@ -71,8 +71,7 @@ export class TelegramService {
 		if (exists && exists.phone)
 			return this.tokenService.generateToken(exists.id)
 
-		if (exists)
-			await firstValueFrom(this.userClient.create({ id: exists.id }))
+		if (exists) this.userClient.create({ id: exists.id }).subscribe()
 
 		const sessionId = randomBytes(16).toString('hex')
 		await this.redisService.set(

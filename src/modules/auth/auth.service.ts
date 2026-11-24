@@ -2,7 +2,7 @@ import { status } from '@grpc/grpc-js'
 import { UserClientGrpc } from '@infrastructure/clients/users.grpc'
 import { MessagingService } from '@infrastructure/messaging/messaging.service'
 import { TokenService } from '@modules/token/token.service'
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { RpcException } from '@nestjs/microservices'
 import { Account } from '@prisma/generated/client'
 import type {
@@ -10,13 +10,14 @@ import type {
 	SendOtpRequest,
 	VerifyOtpRequest
 } from '@teacinema/contracts/gen/ts/auth'
-import { firstValueFrom } from 'rxjs'
 
 import { OtpService } from '../otp/otp.service'
 import { UserRepository } from '../shared'
 
 @Injectable()
 export class AuthService {
+	private readonly logger = new Logger(AuthService.name)
+
 	public constructor(
 		private readonly tokenService: TokenService,
 		private readonly messagingService: MessagingService,
@@ -85,7 +86,9 @@ export class AuthService {
 				isEmailVerified: true
 			})
 
-		await firstValueFrom(this.userClient.create({ id: account.id }))
+		this.userClient.create({ id: account.id }).subscribe({
+			error: (err) => this.logger.error('user create failed', err)
+		})
 
 		return this.tokenService.generateToken(account.id)
 	}
