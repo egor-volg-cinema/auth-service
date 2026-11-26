@@ -31,9 +31,7 @@ export const envSchema = z.object({
 	TELEGRAM_BOT_USERNAME: z.string().min(1),
 	TELEGRAM_REDIRECT_ORIGIN: z.string().min(1),
 
-	NODE_ENV: z
-		.enum(['development', 'production', 'test'])
-		.default('development')
+	NODE_ENV: z.enum(['dev', 'prod', 'test']).default('dev')
 })
 
 export type Env = z.infer<typeof envSchema>

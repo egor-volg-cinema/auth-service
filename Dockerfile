@@ -15,7 +15,7 @@ FROM node:24.19.0 AS runtime
 
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV=prod
 
 COPY package.json package-lock.json prisma.config.ts ./
 
