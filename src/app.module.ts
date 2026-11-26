@@ -14,7 +14,15 @@ import { TokenModule } from './modules/token/token.module'
 
 @Module({
 	imports: [
-		ConfigModule.forRoot({ validate: validateEnv, isGlobal: true }),
+		ConfigModule.forRoot({
+			validate: validateEnv,
+			isGlobal: true,
+			envFilePath: [
+				`.env.${process.env.NODE_ENV}.local`,
+				`.env.${process.env.NODE_ENV}`,
+				'.env'
+			]
+		}),
 		PrismaModule,
 		RedisModule,
 		AuthModule,

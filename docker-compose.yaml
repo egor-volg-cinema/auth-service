@@ -1,0 +1,15 @@
+services:
+    auth-service:
+        container_name: auth-service
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        env_file:
+            - .env.prod.local
+        networks:
+            - cinema-network
+networks:
+    cinema-network:
+        external: true
+        name: docker_cinema-network
