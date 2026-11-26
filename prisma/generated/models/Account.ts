@@ -186,7 +186,7 @@ export type AccountGroupByOutputType = {
   _max: AccountMaxAggregateOutputType | null
 }
 
-type GetAccountGroupByPayload<T extends AccountGroupByArgs> = Prisma.PrismaPromise<
+export type GetAccountGroupByPayload<T extends AccountGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AccountGroupByOutputType, T['by']> &
       {
@@ -234,17 +234,17 @@ export type AccountWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   phone?: string
   email?: string
+  telegramId?: string
   AND?: Prisma.AccountWhereInput | Prisma.AccountWhereInput[]
   OR?: Prisma.AccountWhereInput[]
   NOT?: Prisma.AccountWhereInput | Prisma.AccountWhereInput[]
   role?: Prisma.EnumRoleFilter<"Account"> | $Enums.Role
-  telegramId?: Prisma.StringNullableFilter<"Account"> | string | null
   isPhoneVerified?: Prisma.BoolFilter<"Account"> | boolean
   isEmailVerified?: Prisma.BoolFilter<"Account"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Account"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Account"> | Date | string
   pendingContactChanges?: Prisma.PendingContactChangeListRelationFilter
-}, "id" | "phone" | "email">
+}, "id" | "phone" | "email" | "telegramId">
 
 export type AccountOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
