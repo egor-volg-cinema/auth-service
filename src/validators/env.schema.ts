@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const envSchema = z.object({
+	PORT: z.coerce.number().min(1).max(65535),
 	POSTGRES_URI: z
 		.string()
 		.startsWith('postgres://', 'Must be a valid PostgreSQL URI'),

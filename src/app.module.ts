@@ -2,6 +2,7 @@ import { UserModule } from '@infrastructure/clients/users.module'
 import { TelegramModule } from '@modules/telegram/telegram.module'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { ObservabilityModule } from '@observability/observability.module'
 import { validateEnv } from '@validators'
 
 import { MessagingModule } from './infrastructure/messaging/messaging.module'
@@ -23,6 +24,7 @@ import { TokenModule } from './modules/token/token.module'
 				'.env'
 			]
 		}),
+		ObservabilityModule,
 		PrismaModule,
 		RedisModule,
 		AuthModule,

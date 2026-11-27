@@ -12,7 +12,7 @@ async function bootstrap() {
 	createGrpcServer(app, config)
 
 	await app.startAllMicroservices()
-	await app.init()
+	await app.listen(config.getOrThrow('PORT'))
 }
 
 bootstrap()
