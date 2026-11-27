@@ -1,6 +1,7 @@
 services:
     auth-service:
         container_name: auth-service
+        image: egorcolg/auth-service:dev
         build:
             context: .
             dockerfile: Dockerfile
